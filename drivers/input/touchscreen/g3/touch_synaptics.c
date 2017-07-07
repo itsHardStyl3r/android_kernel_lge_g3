@@ -300,7 +300,7 @@ void write_time_log(char *filename, char *data, int data_include)
 
 	if (filename == NULL) {
 		if (factory_boot)
-			fname = "/data/touch/touch_self_test.txt";
+			fname = "/data/logger/touch_self_test.txt";
 		else
 			fname = "/sdcard/touch_self_test.txt";
 

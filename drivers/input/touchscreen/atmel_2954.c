@@ -5196,31 +5196,17 @@ static ssize_t mxt_run_self_diagnostic_show(struct mxt_data *data, char *buf)
 	for(i = 0; i < data->channel_size.size_x; i++) {
 		data->full_cap[i] = kzalloc(data->channel_size.size_y * sizeof(int), GFP_KERNEL);
 	}
-	if(factorymode){
-		 write_file(SELF_DIAGNOSTIC_FILE_PATH_MINIOS, buf, 1);
-	}
-	else{
-		 write_file(SELF_DIAGNOSTIC_FILE_PATH, buf, 1);
-	}
+
+	write_file(SELF_DIAGNOSTIC_FILE_PATH, buf, 1);
 	msleep(30);
 	len += mxt_info_show(data, buf);
 	len += snprintf(buf + len, PAGE_SIZE - len, "=======RESULT========\n");
 	info_len = len;
 	len = mxt_selftest(data, buf, len);
-        if(factorymode){
-                 write_file(SELF_DIAGNOSTIC_FILE_PATH_MINIOS, buf, 0);
-        }
-        else{
-                 write_file(SELF_DIAGNOSTIC_FILE_PATH, buf, 0);
-        }
+	write_file(SELF_DIAGNOSTIC_FILE_PATH, buf, 0);
 	msleep(30);
 	run_reference_read(data, ref_buf, &ref_len);
-        if(factorymode){
-                 write_file(SELF_DIAGNOSTIC_FILE_PATH_MINIOS, ref_buf, 0);
-        }
-        else{
-                 write_file(SELF_DIAGNOSTIC_FILE_PATH, ref_buf, 0);
-        }
+	write_file(SELF_DIAGNOSTIC_FILE_PATH, ref_buf, 0);
 	msleep(30);
 
 //	Do not use this function to avoid Watch dog.

@@ -660,11 +660,10 @@ void __ext4_abort(struct super_block *sb, const char *function,
 		save_error_info(sb, function, line);
 	#ifdef CONFIG_MACH_LGE
 	/* LGE_CHANGE
-	 * put panic when ext4 partition(data partition) is remounted as Read Only
+	 * put panic when ext4 partition is remounted as Read Only
 	 * 2014-04-15, B2-BSP-FS@lge.com
 	 */
-	if(!strcmp(EXT4_SB(sb)->s_es->s_volume_name,"data"))
-		panic("EXT4-fs panic from previous error. remounted as RO \n");
+	panic("EXT4-fs panic from previous error. remounted as RO \n");
 	#endif
 
 	}

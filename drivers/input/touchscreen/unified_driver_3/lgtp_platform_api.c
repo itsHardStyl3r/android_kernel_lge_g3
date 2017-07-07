@@ -385,51 +385,31 @@ int MIT200_I2C_Write(struct i2c_client *client, u8 *cmd,  int cmdLen, u8 *txbuf,
 int Mxt2954_I2C_Read(struct i2c_client *client, u16 cmd,  int cmdLen, void *rxbuf, int len)
 {
 	int ret = 0;
-	int i = 0;
 	u8 regValue[2] = {(cmd & 0xFF), ((cmd>>8) & 0xFF)};
 
-	do {
-		ret = i2c_read(client, regValue, 2, rxbuf, len);
-		if (ret == TOUCH_FAIL) {
-			if (printk_ratelimit())
-				TOUCH_ERR("failed to read i2c\n");
+	ret = i2c_read(client, regValue, 2, rxbuf, len);
+	if (ret == TOUCH_FAIL) {
+		if (printk_ratelimit())
+			TOUCH_ERR("failed to read i2c\n");
 
-			TOUCH_ERR("i2c retry [%d]\n", i+1);
-			/*MXT_WAKEUP_TIME*/
-			msleep(25);
-		} else {
-			goto out;
-		}
-	} while (++i < 10);
-	TOUCH_ERR("i2c transfer failed\n");
-	return TOUCH_FAIL;
+		return TOUCH_FAIL;
+	}
 
-out:
 	return TOUCH_SUCCESS;
 }
 int Mxt2954_I2C_Write(struct i2c_client *client, u16 cmd, u8 *txbuf, int len)
 {
 	int ret = 0;
-	int i = 0;
 	u8 regValue[2] = {(cmd & 0xFF), ((cmd>>8) & 0xFF)};
 
-	do {
-		ret = i2c_write(client, regValue, 2, txbuf, len);
-		if (ret == TOUCH_FAIL) {
-			if (printk_ratelimit())
-				TOUCH_ERR("failed to write i2c ( reg = %d )\n", cmd);
+	ret = i2c_write(client, regValue, 2, txbuf, len);
+	if (ret == TOUCH_FAIL) {
+		if (printk_ratelimit())
+			TOUCH_ERR("failed to write i2c ( reg = %d )\n", cmd);
 
-			TOUCH_ERR("i2c retry [%d]\n", i+1);
-			/*MXT_WAKEUP_TIME*/
-			msleep(25);
-		} else {
-			goto out;
-		}
-	} while (++i < 10);
-	TOUCH_ERR("i2c transfer failed\n");
-	return TOUCH_FAIL;
+		return TOUCH_FAIL;
+	}
 
-out:
 	return TOUCH_SUCCESS;
 }
 #endif

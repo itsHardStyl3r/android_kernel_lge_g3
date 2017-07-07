@@ -555,11 +555,7 @@ static void WqfirmwareUpgrade(struct work_struct *work_upgrade)
 
 	TOUCH_FUNC();
 
-#if defined(TOUCH_DEVICE_MXT2954)
-	/* Not use TouchDisableIrq */
-#else
 	TouchDisableIrq();
-#endif
 
 	SetDriverState(pDriverData, STATE_UPDATE_FIRMWARE);
 
@@ -579,22 +575,14 @@ static void WqfirmwareUpgrade(struct work_struct *work_upgrade)
 	if (result == TOUCH_FAIL)
 		TOUCH_ERR("failed to upgrade firmware\n");
 
-#if defined(TOUCH_DEVICE_MXT2954)
-	/* Not use Below Function Call */
-#else
-	pDeviceSpecificFunc->Reset(pDriverData->client);
+	//pDeviceSpecificFunc->Reset(pDriverData->client);
 	pDeviceSpecificFunc->InitRegister(pDriverData->client);
 	pDeviceSpecificFunc->ReadIcFirmwareInfo(pDriverData->client, &pDriverData->icFwInfo);
-#endif
 
 	SetDriverState(pDriverData, STATE_NORMAL);
 
-#if defined(TOUCH_DEVICE_MXT2954)
-	/* Not use Below Function Call */
-#else
 	pDeviceSpecificFunc->ClearInterrupt(pDriverData->client);
 	TouchEnableIrq();
-#endif
 
 	wake_unlock(pWakeLockTouch);
 	mutex_unlock(pMutexTouch);

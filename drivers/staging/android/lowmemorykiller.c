@@ -364,14 +364,12 @@ static int reclaim_task_thread(void *p)
 		if (!selected_task)
 			goto reclaim_end;
 
-		task_lock(selected_task);
-
 		if (selected_task->exit_state || !selected_task->mm) {
-			task_unlock(selected_task);
 			put_task_struct(selected_task);
 			goto reclaim_end;
 		}
 
+		task_lock(selected_task);
 		selected_tasksize = get_mm_rss(selected_task->mm);
 		if (!selected_tasksize) {
 			if (lock_task_sighand(selected_task, &flags)) {
