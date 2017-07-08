@@ -87,8 +87,8 @@ static void devfreq_set_freq_limits(struct devfreq *devfreq)
 			max = devfreq->profile->freq_table[idx];
 	}
 
+	devfreq->min_freq = 462400000;
 	devfreq->max_freq = max;
-	devfreq->min_freq = max;
 }
 
 /**
@@ -115,25 +115,24 @@ EXPORT_SYMBOL(devfreq_get_freq_level);
  */
 static int devfreq_update_status(struct devfreq *devfreq, unsigned long freq)
 {
-	int lev, prev_lev, ret = 0;
+	int lev, prev_lev;
 	unsigned long cur_time;
 
+	lev = devfreq_get_freq_level(devfreq, freq);
+	if (lev < 0)
+		return lev;
+
 	cur_time = jiffies;
+	devfreq->time_in_state[lev] +=
+			 cur_time - devfreq->last_stat_updated;
+	devfreq->last_stat_updated = cur_time;
+
+	if (freq == devfreq->previous_freq)
+		return 0;
 
 	prev_lev = devfreq_get_freq_level(devfreq, devfreq->previous_freq);
-	if (prev_lev < 0) {
-		ret = prev_lev;
-		goto out;
-	}
-
-	devfreq->time_in_state[prev_lev] +=
-			 cur_time - devfreq->last_stat_updated;
-
-	lev = devfreq_get_freq_level(devfreq, freq);
-	if (lev < 0) {
-		ret = lev;
-		goto out;
-	}
+	if (prev_lev < 0)
+		return 0;
 
 	if (lev != prev_lev) {
 		devfreq->trans_table[(prev_lev *
@@ -141,9 +140,7 @@ static int devfreq_update_status(struct devfreq *devfreq, unsigned long freq)
 		devfreq->total_trans++;
 	}
 
-out:
-	devfreq->last_stat_updated = cur_time;
-	return ret;
+	return 0;
 }
 
 /**
@@ -1027,10 +1024,7 @@ static int __init devfreq_init(void)
 		return PTR_ERR(devfreq_class);
 	}
 
-	devfreq_wq =
-	    alloc_workqueue("devfreq_wq",
-			    WQ_HIGHPRI | WQ_UNBOUND | WQ_FREEZABLE |
-			    WQ_MEM_RECLAIM, 0);
+	devfreq_wq = create_freezable_workqueue("devfreq_wq");
 	if (IS_ERR(devfreq_wq)) {
 		class_destroy(devfreq_class);
 		pr_err("%s: couldn't create workqueue\n", __FILE__);
