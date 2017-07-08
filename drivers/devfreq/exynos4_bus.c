@@ -772,7 +772,7 @@ static void exynos4_bus_exit(struct device *dev)
 
 static struct devfreq_dev_profile exynos4_devfreq_profile = {
 	.initial_freq	= 400000,
-	.polling_ms	= 50,
+	.polling_ms	= 0,
 	.target		= exynos4_bus_target,
 	.get_dev_status	= exynos4_bus_get_dev_status,
 	.exit		= exynos4_bus_exit,

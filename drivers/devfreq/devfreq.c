@@ -346,7 +346,7 @@ void devfreq_interval_update(struct devfreq *devfreq, unsigned int *delay)
 	unsigned int new_delay = *delay;
 
 	mutex_lock(&devfreq->lock);
-	devfreq->profile->polling_ms = new_delay;
+	devfreq->profile->polling_ms = 0;
 
 	if (devfreq->stop_polling)
 		goto out;

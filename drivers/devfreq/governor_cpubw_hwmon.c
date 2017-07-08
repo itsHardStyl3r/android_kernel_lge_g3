@@ -382,7 +382,7 @@ static int devfreq_cpubw_hwmon_ev_handler(struct devfreq *df,
 		sample_ms = df->profile->polling_ms;
 		sample_ms = max(MIN_MS, sample_ms);
 		sample_ms = min(MAX_MS, sample_ms);
-		df->profile->polling_ms = sample_ms;
+		df->profile->polling_ms = 0;
 		devfreq_monitor_start(df);
 
 		pr_debug("Enabled CPU BW HW monitor governor\n");
