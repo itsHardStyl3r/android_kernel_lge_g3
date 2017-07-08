@@ -45,7 +45,7 @@ static struct workqueue_struct *cpu_boost_wq;
 
 static struct work_struct input_boost_work;
 
-static unsigned int boost_ms = 900;
+static unsigned int boost_ms = 500;
 module_param(boost_ms, uint, 0644);
 
 static unsigned int sync_threshold = 2457600;
