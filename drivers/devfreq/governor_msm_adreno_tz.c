@@ -317,7 +317,9 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 		break;
 
 	case DEVFREQ_GOV_SUSPEND:
-		result = tz_suspend(devfreq);
+		devfreq->profile->target(devfreq->dev.parent,
+				&devfreq->min_freq,
+				DEVFREQ_FLAG_WAKEUP_MAXFREQ);
 		break;
 
 	case DEVFREQ_GOV_RESUME:

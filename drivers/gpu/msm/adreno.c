@@ -80,16 +80,6 @@
 
 static void adreno_input_work(struct work_struct *work);
 
-/*
- * The default values for the simpleondemand governor are 90 and 5,
- * we use different values here.
- * They have to be tuned and compare with the tz governor anyway.
- */
-static struct devfreq_simple_ondemand_data adreno_ondemand_data = {
-	.upthreshold = 80,
-	.downdifferential = 20,
-};
-
 static struct devfreq_msm_adreno_tz_data adreno_tz_data = {
 	.bus = {
 		.max = 450,
@@ -98,7 +88,6 @@ static struct devfreq_msm_adreno_tz_data adreno_tz_data = {
 };
 
 static const struct devfreq_governor_data adreno_governors[] = {
-	{ .name = "simple_ondemand", .data = &adreno_ondemand_data },
 	{ .name = "msm-adreno-tz", .data = &adreno_tz_data },
 };
 

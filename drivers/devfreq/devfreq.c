@@ -87,7 +87,7 @@ static void devfreq_set_freq_limits(struct devfreq *devfreq)
 			max = devfreq->profile->freq_table[idx];
 	}
 
-	devfreq->min_freq = 462400000;
+	devfreq->min_freq = min;
 	devfreq->max_freq = max;
 }
 
