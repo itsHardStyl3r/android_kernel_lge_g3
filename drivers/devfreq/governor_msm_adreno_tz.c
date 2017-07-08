@@ -46,17 +46,6 @@ static DEFINE_SPINLOCK(tz_lock);
 #define TAG "msm_adreno_tz: "
 
 /* Trap into the TrustZone, and call funcs there. */
-static int __secure_tz_entry2(u32 cmd, u32 val1, u32 val2)
-{
-	int ret;
-	spin_lock(&tz_lock);
-	/* sync memory before sending the commands to tz*/
-	__iowmb();
-	ret = scm_call_atomic2(SCM_SVC_IO, cmd, val1, val2);
-	spin_unlock(&tz_lock);
-	return ret;
-}
-
 static int __secure_tz_entry3(u32 cmd, u32 val1, u32 val2, u32 val3)
 {
 	int ret;
@@ -286,20 +275,6 @@ static int tz_resume(struct devfreq *devfreq)
 	freq = profile->initial_freq;
 
 	return profile->target(devfreq->dev.parent, &freq, 0);
-}
-
-static int tz_suspend(struct devfreq *devfreq)
-{
-	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
-
-	__secure_tz_entry2(TZ_RESET_ID, 0, 0);
-
-	priv->bin.total_time = 0;
-	priv->bin.busy_time = 0;
-	priv->bus.total_time = 0;
-	priv->bus.gpu_time = 0;
-	priv->bus.ram_time = 0;
-	return 0;
 }
 
 static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
