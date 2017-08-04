@@ -31,6 +31,7 @@ comment "DEVFREQ Governors"
 
 config DEVFREQ_GOV_MIN_MAX
 	tristate "MinMax"
+	default y
 	help
 	  Sets the frequency at the maximum available frequency
 	  when under load, if the GPU is idle the frequency drops
