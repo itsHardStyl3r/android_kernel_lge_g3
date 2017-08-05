@@ -305,7 +305,7 @@ int force_fast_charge_init(void)
 {
 	int force_fast_charge_retval;
 
-	force_fast_charge     = FAST_CHARGE_DISABLED; /* Forced fast charge disabled by default */
+	force_fast_charge     = FAST_CHARGE_FORCE_AC; /* Forced fast charge disabled by default */
 	ac_charge_level       = AC_CHARGE_1500;	      /* Default AC charge level to 1500mA/h    */
 	usb_charge_level      = USB_CHARGE_500;	      /* Default USB charge level to 500mA/h    */
 	current_charge_level  = NOT_FAST_CHARGING;    /* Default to not fast charging           */
