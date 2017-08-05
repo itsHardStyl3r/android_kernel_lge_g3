@@ -312,7 +312,7 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 }
 
 static struct devfreq_governor msm_adreno_tz = {
-	.name = "msm-adreno-tz",
+	.name = "msm-adreno",
 	.get_target_freq = tz_get_target_freq,
 	.event_handler = tz_handler,
 };

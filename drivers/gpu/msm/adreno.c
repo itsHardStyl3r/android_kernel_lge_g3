@@ -88,7 +88,7 @@ static struct devfreq_msm_adreno_tz_data adreno_tz_data = {
 };
 
 static const struct devfreq_governor_data adreno_governors[] = {
-	{ .name = "msm-adreno-tz", .data = &adreno_tz_data },
+	{ .name = "msm-adreno", .data = &adreno_tz_data },
 };
 
 static const struct kgsl_functable adreno_functable;

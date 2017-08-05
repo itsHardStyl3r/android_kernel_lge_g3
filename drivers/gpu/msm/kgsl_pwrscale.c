@@ -430,7 +430,7 @@ int kgsl_pwrscale_init(struct device *dev, const char *governor)
 
 	/* initialize any governor specific data here */
 	for (i = 0; i < profile->num_governor_data; i++) {
-		if (strncmp("msm-adreno-tz",
+		if (strncmp("msm-adreno",
 				profile->governor_data[i].name,
 				DEVFREQ_NAME_LEN) == 0) {
 			data = (struct devfreq_msm_adreno_tz_data *)
