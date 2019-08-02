@@ -16,7 +16,7 @@ gensrcs {
     tools: ["unifdef"],
     tool_files: ["scripts/headers_install.sh"],
     export_include_dirs: ["include/uapi"],
-    srcs: ["include/uapi/linux/qseecom.h"],
+    srcs: ["include/linux/qseecom.h"],
     output_extension: "h",
 }
 
